@@ -7,7 +7,7 @@ ARCH=`uname -m`
 DOT_FILES=(
     "zsh/zsh_plugins.txt" "zsh/zprofile" "zsh/zshrc" "zsh/zshenv" 
     "tmux/tmux.local" "git/gitconfig"  "git/gitignore_global"
-    "bash_profile"
+    "bash/bash_profile"
 )
 
 # Define colors and styles
@@ -25,14 +25,13 @@ version() {
 check_requirements() {
     MSG="${red}Your system doesn't meet the following requirements:\n"
 
-    which git > /dev/null
-    if [ "$?" != 0 ]; then
+    if which git > /dev/null; then
         MSG="${MSG}\t* ${bold}Git${normal}${red} is not installed\n"
         FAIL=true
     fi
 
     which wget > /dev/null
-    if [ "$?" != 0 ]; then
+    if [[ "$?" != 0 && $(uname) == "Linux" ]]; then
         MSG="${MSG}\t* ${bold}wget${normal}${red} is not installed\n"
         FAIL=true
     fi
@@ -86,72 +85,14 @@ install_posh() {
     chmod +x ~/.local/bin/oh-my-posh
 }
 
-install_lsd() {
-    LSDVER=$(wget -q -O - https://github.com/Peltoche/lsd/tags.atom | yq -p=xml '.feed.entry[0].title')
-    case $(uname -m) in
-        x86_64)     ARCH=x86_64
-                    ;;
-        arm64)      ARCH=aarch64
-                    ;;
-        aarch64)    ARCH=aarch64
-                    ;;
-        *)          echo "${red}Can't identify Arch to match to an LSD download.  Arch = $(uname -m)... ${normal}${green}Skipping...${normal}"
-                    return 0
-    esac
-    echo "Installing the latest version of LSD -> version: ${LSDVER}..."
-    wget -q -O /tmp/lsd-${LSDVER}-${ARCH}-unknown-linux-gnu.tar.gz "https://github.com/Peltoche/lsd/releases/download/${LSDVER}/lsd-${LSDVER}-${ARCH}-unknown-linux-gnu.tar.gz"
-    if [ ! -f "/tmp/lsd-${LSDVER}-${ARCH}-unknown-linux-gnu.tar.gz" ]; then
-        echo "${red}Failed to download go... ${normal}${green}Skipping install...${normal}"
-        return 1
-    fi
-    tar zxf /tmp/lsd-${LSDVER}-${ARCH}-unknown-linux-gnu.tar.gz -C /tmp
-    mv /tmp/lsd-${LSDVER}-${ARCH}-unknown-linux-gnu/lsd ~/.local/bin
-    
-    if [ $? == 0 ]; then
-        return 0
-    else
-        echo "Failed to install ls replacement lsd"
-        return 1
-    fi
-}
-
-install_bat() {
-    BATVER=$(wget -q -O - https://github.com/sharkdp/bat/releases.atom | yq -p=xml '.feed.entry[0].title')
-    case $(uname -m) in
-        x86_64)     ARCH=x86_64
-                    TARGET=bat-${BATVER}-${ARCH}-unknown-linux-gnu
-                    ;;
-        arm64)      ARCH=aarch64
-                    TARGET=bat-${BATVER}-${ARCH}-unknown-linux-gnu
-                    ;;
-        aarch64)    ARCH=aarch64
-                    TARGET=bat-${BATVER}-${ARCH}-unknown-linux-gnu
-                    ;;
-        armf)       ARCG=arm
-                    TARGET=bat-${BATVER}-${ARCH}-unknown-linux-gnueabihf
-                    ;;
-        *)          echo "${red}Can't identify Arch to match to an bat download.  Arch = $(uname -m)... ${normal}${green}Skipping...${normal}"
-                    return 0
-    esac
-    show_msg "Installing the latest version of bat -> version: ${BATVER}..."
-
-    wget -q -O /tmp/$TARGET.tar.gz "https://github.com/sharkdp/bat/releases/download/${BATVER}/${TARGET}.tar.gz"
-    if [ ! -f "/tmp/$TARGET.tar.gz" ]; then
-        show_msg "${red}Failed to download bat... ${normal}${green}Skipping install...${normal}"
-        return 1
-    fi
-    tar -zxf /tmp/$TARGET.tar.gz -C /tmp
-    mv /tmp/$TARGET/bat ~/.local/bin/bat
-    if [ $? == 0 ]; then
-        return 0
-    else
-        show_msg "Failed to install bat the cat clone with wings"
-        return 1
-    fi
+install_rust() {
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+    source ~/.cargo/env
+    cargo install bat lsd htmlq
 }
 
 install_1password_cli() {
-    OPVER=$(wget -q -O - https://app-updates.agilebits.com/product_history/CLI2 | sed -n "/<h3>/,/<\h3>/p" | head -n2 | tr -d '\n' |  sed 's/$/<\/h3>/' | yq -p=xml '.h3')
+    OPVER=$(wget -q -O - https://app-updates.agilebits.com/product_history/CLI2 |htmlq  h3 -r span | yq -p=xml '.h3' | head -n1 | tr -d " -")
     case $(uname -m) in
         x86_64)     ARCH=amd64
                     ;;
@@ -164,19 +105,20 @@ install_1password_cli() {
         *)          echo "${red}Can't identify Arch to match to an 1password cli download.  Arch = $(uname -m)... ${normal}${green}Skipping...${normal}"
                     return 0
     esac
-    show_msg "Installing the latest version of 1password cli -> version: ${OPVER}..."
+    echo "Installing the latest version of 1password cli -> version: ${OPVER}..."
 
     wget -q -O /tmp/op_linux_${ARCH}_v${OPVER}.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v${OPVER}/op_linux_${ARCH}_v${OPVER}.zip"
     if [ ! -f "/tmp/op_linux_${ARCH}_v${OPVER}.zip" ]; then
         show_msg "${red}Failed to download 1password cli... ${normal}${green}Skipping install...${normal}"
         return 1
     fi
-    unzip /tmp/op_linux_${ARCH}_v${OPVER}.zip -d /tmp
+    unzip -qq /tmp/op_linux_${ARCH}_v${OPVER}.zip -d /tmp
     mv /tmp/op ~/.local/bin/op
     if [ $? == 0 ]; then
+        rm -r /tmp/op*
         return 0
     else
-        show_msg "Failed to install bat the cat clone with wings"
+        show_msg "Failed to install 1password CLI.  This function is not stable."
         return 1
     fi
 }
@@ -194,26 +136,43 @@ install_fzf() {
 }
 
 brew_install() {
-    if which brew > /dev/null; then
-        brew install lsd antibody oh-my-posh bat yq fzf 1password-cli
-        $(brew --prefix)/opt/fzf/install
+    if ! which brew > /dev/null; then 
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
+    brew install wget lsd antibody oh-my-posh bat yq fzf 1password-cli neovim
+    $(brew --prefix)/opt/fzf/install
+}
+
+ubuntu_install_simple() {
+    add-apt-repository -y ppa:git-core/ppa
+    sudo apt-get update
+    sudo apt install -y "git" "curl" "zsh" "build-essential" "htop" "tmux" "neovim" "scdaemon" "pinentry-tty" "pinentry-curses" "gnupg2"
 }
 
 linux_install() {
+    if which lsb_release1 > /dev/null && lsb_release -d > /dev/null; then
+        ubuntu_install_simple
+    fi
     install_posh
-    install_antibody
     install_yq
-    install_lsd
-    install_bat
+    install_antibody
+    install_rust
     install_fzf
     install_1password_cli
 }
 
+setup_directories() {
+    mkdir -p ~/.local/bin
+    mkdir -p ~/.config
+    mkdir -p ~/Desktop
+    mkdir -p ~/Development/GitHub
+    mkdir -p ~/Development/GitLab
+    mkdir -p ~/Documents
+    mkdir -p ~/Pictures
+    mkdir -p ~/Downloads
+}
 
 install_missing() {
-    mkdir -p ~/.local/bin
-    
     if [[ $INSTALL == "false" ]]; then
         return 0
     fi
@@ -228,8 +187,14 @@ install_missing() {
     esac
 }
 
-if [ -d zsh ]; then
-    # Assume we have a complete directory
-else
-    git clone 
-fi
+install_astronvim() {
+    git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
+    if which nvim > /dev/null; then
+        nvim +PackerSync
+    fi
+}
+
+setup_directories
+install_missing
+install_astronvim
+git clone https://gitlab.com/j-maynard/dot-files.git $TARGET_PATH

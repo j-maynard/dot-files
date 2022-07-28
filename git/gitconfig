@@ -1,8 +1,9 @@
 [include]
-    path = ~/.term-config/gituser
+    path = ~/.config/dotfiles/gituser
 [core]
     pager = 'bat'
-	excludesfile = /Users/jamie/.gitignore_global
+    editor = 'nvim'
+	excludesfile = ~/.gitignore_global
 [commit]
 	gpgsign = true
 [alias]

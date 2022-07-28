@@ -44,10 +44,8 @@ alias cat='bat'
 alias cata='bat -A'
 alias catp='bat -p'
 
-## glow doesn't pager by default
-alias glow='glow -p'
-
 # JSON output view
+alias jq='yq -o json -C -r'
 alias json='yq -o json -C -r | bat'
 
 # 1Passowrd aliases
