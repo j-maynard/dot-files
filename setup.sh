@@ -144,13 +144,14 @@ brew_install() {
 }
 
 ubuntu_install_simple() {
-    add-apt-repository -y ppa:git-core/ppa
+    sudo add-apt-repository -y ppa:git-core/ppa
+    sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo apt-get update
     sudo apt install -y "git" "curl" "zsh" "build-essential" "htop" "tmux" "neovim" "scdaemon" "pinentry-tty" "pinentry-curses" "gnupg2"
 }
 
 linux_install() {
-    if which lsb_release1 > /dev/null && lsb_release -d > /dev/null; then
+    if which lsb_release > /dev/null && lsb_release -d > /dev/null; then
         ubuntu_install_simple
     fi
     install_posh

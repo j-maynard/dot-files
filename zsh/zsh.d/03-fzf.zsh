@@ -1,4 +1,5 @@
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export PATH=~/.fzf/bin:$PATH
 
 # Auto-completion
 # ---------------
