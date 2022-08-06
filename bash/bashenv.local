@@ -1,0 +1,4 @@
+#!/bin/zsh
+# This file is for local environment variables and can override any of
+# the variables in bashenv.  Don't change bashenv unless you have to and
+# make sure its not changed with scripts.

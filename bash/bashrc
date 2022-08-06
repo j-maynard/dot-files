@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Source files
+#
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+if [ -f "${HOME}/.config/dot-files/bash/.optional.txt" ]; then
+    OPTIONAL=$(cat ${HOME}/.config/dot-files/bash/.optional.txt)
+fi
+
+for f in "${HOME}"/.config/dot-files/bash/bash.d/*.sh; do
+	if [[ " ${OPTIONAL[@]} " =~ " ${f} " ]]; then
+		continue
+	fi
+	source "${f}"
+done

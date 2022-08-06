@@ -1,3 +1,4 @@
+#!/bin/bash
 export DEVDIR=$HOME/Development
 export ITERM_INT=false
 export GPG_TTY=$(tty)
@@ -45,4 +46,4 @@ export EDITOR=nvim
 
 # Source local environment variables to override
 # any of the envars defined here.
-source ~/.config/dot-files/zsh/zshenv.local
+source ~/.config/dot-files/bash/bashenv.local
