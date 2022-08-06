@@ -145,9 +145,22 @@ brew_install() {
 
 ubuntu_install_simple() {
     sudo add-apt-repository -y ppa:git-core/ppa
-    sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo apt-get update
-    sudo apt install -y "git" "curl" "zsh" "build-essential" "htop" "tmux" "neovim" "scdaemon" "pinentry-tty" "pinentry-curses" "gnupg2"
+    sudo apt install -y "git" "curl" "zsh" "build-essential" "htop" "tmux" "scdaemon" "pinentry-tty" "pinentry-curses" "gnupg2"
+
+    if [[ $(uname -m) != "aarch64" ]]; then
+        sudo add-apt-repository -y ppa:neovim-ppa/stable
+        sudo apt install -y neovim
+    else
+        sudo apt-get install ninja-build \
+            gettext libtool libtool-bin \
+            autoconf automake cmake g++ \
+            pkg-config unzip luajit
+        git clone https://github.com/neovim/neovim.git /tmp/neovim
+        cd /tmp/neovim
+        git checkout stable
+        sudo make install
+    fi
 }
 
 linux_install() {
@@ -190,6 +203,19 @@ install_missing() {
     esac
 }
 
+setup_neovim() {
+    install_astronvim
+}
+
+# This is my historical vim setup
+install_vimplug() {
+    mkdir -p ~/.config/nvim
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    ln -s ~/.config/dot-files/vim/init.vim ~/.config/nvim/init.vim
+    nvim -es -u init.vim -i NONE -c "PlugInstall" -c "qa"
+}
+
 install_astronvim() {
     git clone https://github.com/AstroNvim/AstroNvim ~/.config/nvim
     if which nvim > /dev/null; then
@@ -199,7 +225,7 @@ install_astronvim() {
 
 setup_directories
 install_missing
-install_astronvim
+setup_neovim
 git clone https://gitlab.com/j-maynard/dot-files.git $TARGET_PATH
 
 for i in ${DOT_FILES[@]}; do

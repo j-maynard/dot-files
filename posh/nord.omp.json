@@ -76,6 +76,7 @@
           "trailing_diamond": "\ue0b4",
           "properties": {
             "linux": "\uf1d0",
+            "ubuntu": "\uf1d0",
             "macos": "\uf1d0",
             "template": "<transparent>\ue0b0</> {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
             "windows": "\uf1d0"
