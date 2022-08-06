@@ -1,5 +1,5 @@
 [include]
-    path = ~/.config/dotfiles/gituser
+    path = ~/.config/dot-files/gituser
 [core]
     pager = 'bat'
     editor = 'nvim'

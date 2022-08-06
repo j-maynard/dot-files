@@ -2,11 +2,11 @@
 # Source files
 #
 
-if [ -f "${HOME}/.config/dotfiles/.optional" ]; then
+if [ -f "${HOME}/.config/dot-files/zsh/.optional" ]; then
     OPTIONAL=$(cat .optional.txt)
 fi
 
-for f in "${HOME}"/.config/dotfiles/zsh.d/*.zsh; do
+for f in "${HOME}"/.config/dot-files/zsh/zsh.d/*.zsh; do
 	if [[ " ${OPTIONAL[@]} " =~ " ${f} " ]]; then
 		continue
 	fi

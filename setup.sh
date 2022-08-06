@@ -1,13 +1,13 @@
 #!/bin/bash
 SCRIPT=`realpath -s $0`
 SCRIPTPATH=`dirname $SCRIPT`
-TARGET_PATH=`~/.config/dotfiles`
+TARGET_PATH=~/.config/dot-files
 ARCH=`uname -m`
 
 DOT_FILES=(
     "zsh/zsh_plugins.txt" "zsh/zprofile" "zsh/zshrc" "zsh/zshenv" 
-    "tmux/tmux.local" "git/gitconfig"  "git/gitignore_global"
-    "bash/bash_profile"
+    "tmux/tmux.conf.local" "git/gitconfig"  "git/gitignore_global"
+    "bash/bashrc"
 )
 
 # Define colors and styles
@@ -59,7 +59,7 @@ install_yq() {
                     ;;
         aarch64)    ARCH=arm64
                     ;;
-        *)          echo "${red}Can't identify Arch to match to an LSD download.  Arch = $(uname -m)... ${normal}${green}Skipping...${normal}"
+        *)          echo "${red}Can't identify Arch to match to an yq download.  Arch = $(uname -m)... ${normal}${green}Skipping...${normal}"
                     return 0
     esac
     wget -q -O ~/.local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${ARCH}
@@ -109,7 +109,7 @@ install_1password_cli() {
 
     wget -q -O /tmp/op_linux_${ARCH}_v${OPVER}.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v${OPVER}/op_linux_${ARCH}_v${OPVER}.zip"
     if [ ! -f "/tmp/op_linux_${ARCH}_v${OPVER}.zip" ]; then
-        show_msg "${red}Failed to download 1password cli... ${normal}${green}Skipping install...${normal}"
+        echo "${red}Failed to download 1password cli... ${normal}${green}Skipping install...${normal}"
         return 1
     fi
     unzip -qq /tmp/op_linux_${ARCH}_v${OPVER}.zip -d /tmp
@@ -118,14 +118,14 @@ install_1password_cli() {
         rm -r /tmp/op*
         return 0
     else
-        show_msg "Failed to install 1password CLI.  This function is not stable."
+        echo "Failed to install 1password CLI.  This function is not stable."
         return 1
     fi
 }
 
 install_antibody() {
 	if ! which antibody > /dev/null; then
-	    show_msg "Installing antibody..."
+	    echo "Installing antibody..."
 	    wget -q -O - git.io/antibody | sh -s - -b ~/.local/bin
 	fi
 }
@@ -139,7 +139,7 @@ brew_install() {
     if ! which brew > /dev/null; then 
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
-    brew install wget lsd antibody oh-my-posh bat yq fzf 1password-cli neovim
+    brew install wget oh-my-posh yq fzf 1password-cli neovim gnupg2 tmux htop
     $(brew --prefix)/opt/fzf/install
 }
 
@@ -155,9 +155,6 @@ linux_install() {
     fi
     install_posh
     install_yq
-    install_antibody
-    install_rust
-    install_fzf
     install_1password_cli
 }
 
@@ -170,6 +167,7 @@ setup_directories() {
     mkdir -p ~/Documents
     mkdir -p ~/Pictures
     mkdir -p ~/Downloads
+    export PATH=~/.local/bin:$PATH
 }
 
 install_missing() {
@@ -177,6 +175,10 @@ install_missing() {
         return 0
     fi
 
+    install_rust
+    install_fzf
+    install_antibody
+    
     case $(uname) in
         Linux)      linux_install
                     ;;
@@ -198,3 +200,11 @@ setup_directories
 install_missing
 install_astronvim
 git clone https://gitlab.com/j-maynard/dot-files.git $TARGET_PATH
+
+for i in ${DOT_FILES[@]}; do
+    f=$(echo $i | cut -d '/' -f2)
+    if [[ -f ~/.$f || -L $f ]]; then
+        rm ~/.$f
+    fi
+    ln -s $TARGET_PATH/$i ~/.$f
+done
