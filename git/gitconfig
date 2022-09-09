@@ -1,5 +1,15 @@
 [include]
-    path = ~/.config/dot-files/gituser
+    path = ~/.config/dot-files/git/gituser
+
+[includeIf "gitdir:~/Development/GitLab-Work/"]
+    path = ~/.config/dot-files/git/gitlab-work-user
+
+[includeIf "gitdir:~/Development/GitLab-Personal/"]
+    path = ~/.config/dot-files/git/gitlab-personal-user
+
+[includeIf "gitdir:~/Development/GitHub/"]
+    path = ~/.config/dot-files/git/github-user
+
 [core]
     pager = 'bat'
     editor = 'nvim'

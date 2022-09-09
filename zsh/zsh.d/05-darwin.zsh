@@ -8,4 +8,7 @@ if [[ $(uname) == "Darwin" ]]; then
         export GPG_AGENT_INFO
         export SSH_AUTH_SOCK
     fi
+    if [ -d "/opt/homebrew/opt/coreutils/libexec/gnubin" ]; then
+        export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+    fi
 fi

@@ -1,0 +1,23 @@
+Host *
+	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+Include ~/.ssh/config.home
+
+Host github github.com
+  HostName github.com
+  Port 22
+  IdentityFile ~/.ssh/github.pub
+  User git
+
+Host jamiemaynard.gitlab.com
+	HostName gitlab.com
+	Port 22
+	IdentityFile ~/.ssh/gitlab.pub
+	User git
+
+Host j-maynard.gitlab.com
+	Hostname gitlab.com
+	Port 22
+	IdentityAgent ~/.ssh/gitlab.pub
+	User git
+
