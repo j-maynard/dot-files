@@ -81,7 +81,7 @@
         {
           "background": "#8FBCBB",
           "foreground": "#2E3440",
-          "leading_diamond": "<#8FBCBB>\u2500\u2500</>\ue0b6",
+          "leading_diamond": "<#8FBCBB,transparent>\u2500\u2500</>\ue0b6",
           "properties": {
             "branch_icon": "\ue725  ",
             "fetch_status": true,
@@ -90,7 +90,7 @@
           },
           "style": "diamond",
           "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} <background,transparent>\ue0b0</><transparent>\ue0b0</> \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} <background,transparent>\ue0b0</><transparent>\ue0b0</>{{ end }}{{ if .Staging.Changed }}<#ECEFF4> \uf046 {{ .Staging.String }}</>{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "git"
         }
       ],
@@ -98,7 +98,7 @@
     },
     {
       "alignment": "right",
-      "filler": "<#8FBCBB>\u2500</>",
+      "filler": "<#8FBCBB,transparent>\u2500</>",
       "segments": [
         {
           "background": "#5E81AC",
@@ -111,7 +111,7 @@
           },
           "style": "diamond",
           "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "node"
         },
         {
@@ -120,7 +120,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "python"
         },
         {
@@ -129,7 +129,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue738 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "java"
         },
         {
@@ -138,7 +138,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue77f {{ if .Unsupported }}\uf071{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "dotnet"
         },
         {
@@ -147,7 +147,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ufcd1 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "go"
         },
         {
@@ -156,7 +156,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue7a8 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "rust"
         },
         {
@@ -165,7 +165,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue798 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "dart"
         },
         {
@@ -174,7 +174,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue753 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "angular"
         },
         {
@@ -183,7 +183,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " <#ca3c34>\ue624</> {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "julia"
         },
         {
@@ -192,7 +192,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue791 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "ruby"
         },
         {
@@ -201,7 +201,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \uf104<#f5bf45>\uf0e7</>\uf105 {{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "azfunc"
         },
         {
@@ -210,7 +210,7 @@
           "leading_diamond": "\ue0b6",
           "style": "diamond",
           "template": " \ue7ad {{.Profile}}{{if .Region}}@{{.Region}}{{end}} ",
-          "trailing_diamond": "\ue0b4<#8FBCBB>\u2500\u2500</>",
+          "trailing_diamond": "\ue0b4<#8FBCBB,transparent>\u2500\u2500</>",
           "type": "aws"
         },
         {
