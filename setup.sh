@@ -92,35 +92,15 @@ install_rust() {
 }
 
 install_1password_cli() {
-    OPVER=$(wget -q -O - https://app-updates.agilebits.com/product_history/CLI2 |htmlq  h3 -r span | yq -p=xml '.h3' | head -n1 | tr -d " -")
-    case $(uname -m) in
-        x86_64)     ARCH=amd64
-                    ;;
-        arm64)      ARCH=arm64
-                    ;;
-        aarch64)    ARCH=arm64
-                    ;;
-        armf)       ARCG=arm
-                    ;;
-        *)          echo "${red}Can't identify Arch to match to an 1password cli download.  Arch = $(uname -m)... ${normal}${green}Skipping...${normal}"
-                    return 0
-    esac
-    echo "Installing the latest version of 1password cli -> version: ${OPVER}..."
-
-    wget -q -O /tmp/op_linux_${ARCH}_v${OPVER}.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v${OPVER}/op_linux_${ARCH}_v${OPVER}.zip"
-    if [ ! -f "/tmp/op_linux_${ARCH}_v${OPVER}.zip" ]; then
-        echo "${red}Failed to download 1password cli... ${normal}${green}Skipping install...${normal}"
-        return 1
-    fi
-    unzip -qq /tmp/op_linux_${ARCH}_v${OPVER}.zip -d /tmp
-    mv /tmp/op ~/.local/bin/op
-    if [ $? == 0 ]; then
-        rm -r /tmp/op*
-        return 0
-    else
-        echo "Failed to install 1password CLI.  This function is not stable."
-        return 1
-    fi
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" | sudo tee /etc/apt/sources.list.d/1password.list
+    sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+    curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | \
+    sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
+    sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+    curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
+    sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
+    sudo apt update && sudo apt install 1password-cli
 }
 
 install_antibody() {
@@ -166,18 +146,19 @@ ubuntu_install_simple() {
 linux_install() {
     if which lsb_release > /dev/null && lsb_release -d > /dev/null; then
         ubuntu_install_simple
+        install_1password_cli
     fi
     install_posh
     install_yq
-    install_1password_cli
 }
 
 setup_directories() {
     mkdir -p ~/.local/bin
     mkdir -p ~/.config
     mkdir -p ~/Desktop
-    mkdir -p ~/Development/GitHub
-    mkdir -p ~/Development/GitLab
+    mkdir -p ~/Developer/GitHub
+    mkdir -p ~/Developer/GitLab\ Personal
+    mkdir -p ~/Developer/GitLab\ Work
     mkdir -p ~/Documents
     mkdir -p ~/Pictures
     mkdir -p ~/Downloads
