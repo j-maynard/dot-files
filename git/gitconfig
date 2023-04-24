@@ -1,19 +1,19 @@
 [include]
     path = ~/.config/dot-files/git/gituser
 
-[includeIf "gitdir:~/Development/GitLab-Work/"]
+[includeIf "gitdir:~/Developer/GitLab-Work/"]
     path = ~/.config/dot-files/git/gitlab-work-user
 
-[includeIf "gitdir:~/Development/GitLab-Personal/"]
+[includeIf "gitdir:~/Developer/GitLab-Personal/"]
     path = ~/.config/dot-files/git/gitlab-personal-user
 
-[includeIf "gitdir:~/Development/GitHub/"]
+[includeIf "gitdir:~/Developer/GitHub/"]
     path = ~/.config/dot-files/git/github-user
 
 [core]
     pager = 'bat'
     editor = 'nvim'
-	excludesfile = ~/.gitignore_global
+	excludesfile = /Users/jamie/.gitignore_global
 [commit]
 	gpgsign = true
 [alias]
@@ -28,6 +28,7 @@
     defaultBranch = main
 [pull]
     rebase = false
+
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 

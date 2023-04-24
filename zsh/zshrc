@@ -12,3 +12,7 @@ for f in "${HOME}"/.config/dot-files/zsh/zsh.d/*.zsh; do
 	fi
 	source "${f}"
 done
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+eval "$(rbenv init - zsh)"

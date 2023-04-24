@@ -53,3 +53,6 @@ alias 1p-signin="eval \$(op signin punkyideas)"
 
 # Update GPG Yubikey pointer
 alias ykswitch='gpg-connect-agent "scd serialno" "learn --force" /bye'
+
+# Add function to allow setting of terminal titles
+title() { printf "\033]0;$*\007"; }
