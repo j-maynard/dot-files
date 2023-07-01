@@ -157,8 +157,8 @@ setup_directories() {
     mkdir -p ~/.config
     mkdir -p ~/Desktop
     mkdir -p ~/Developer/GitHub
-    mkdir -p ~/Developer/GitLab\ Personal
-    mkdir -p ~/Developer/GitLab\ Work
+    mkdir -p ~/Developer/GitLab-Personal
+    mkdir -p ~/Developer/GitLab-Work
     mkdir -p ~/Documents
     mkdir -p ~/Pictures
     mkdir -p ~/Downloads
