@@ -24,6 +24,13 @@ else
     fi
 fi
 
+export MANUFACTURER=UNKNOWN
+if [[ -v WSLENV ]]; then
+      export MANUFACTURER=$(powershell.exe -command "(Get-WmiObject -Class:Win32_ComputerSystem).Manufacturer")
+elif [ -f /sys/devices/virtual/dmi/id/sys_vendor ]; then
+      export MANUFACTURER=$(cat /sys/devices/virtual/dmi/id/sys_vendor)
+fi
+
 # Setup homebrew on the mac
 if [[ $(uname) == "Darwin" ]]; then
     eval $(/opt/homebrew/bin/brew shellenv)

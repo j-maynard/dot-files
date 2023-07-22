@@ -10,10 +10,31 @@
           "type": "os",
           "style": "diamond",
           "foreground": "#D8DEE9",
+          "background": "#434C5E",
+          "leading_diamond": "<#5E81AC,transparent>\u256d\u2500</>\ue0b6",
+          "trailing_diamond": "<#434C6A,transparent>\ue0b4",
+          "template": " {{ if .WSL }}\uf17a WSL{{ end }} "
+        },
+        {
+          "type": "os",
+          "style": "diamond",
+          "foreground": "#D8DEE9",
+          "background": "#5E81AC",
+          "leading_diamond": "\u2500\ue0b6",
+          "trailing_diamond": "<#5E81AC,transparent>\ue0b0",
+          "template": " {{ if .WSL }}{{.Icon}}  {{ end }}",
+          "properties": {
+            "macos": "\udb80\udc36"
+          }
+        },
+        {
+          "type": "os",
+          "style": "diamond",
+          "foreground": "#D8DEE9",
           "background": "#5E81AC",
           "leading_diamond": "\u256d\u2500\ue0b6",
           "trailing_diamond": "<#5E81AC,transparent>\ue0b0",
-          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
+          "template": " {{ if not .WSL }}{{.Icon}} {{ end }}",
           "properties": {
             "macos": "\udb80\udc36"
           }
@@ -24,7 +45,7 @@
           "foreground": "#2E3440",
           "background": "#81A1C1",
           "trailing_diamond": "<#81A1C1,transparent>\ue0b0",
-          "template": "<transparent,#81A1C1>\ue0b0</> \ue266 {{ .Output }} ",
+          "template": "<transparent,#81A1C1>\ue0b0</> \uf4bc  {{ .Output }} ",
           "properties": {
             "command": "uname -m"
           }
@@ -69,10 +90,24 @@
         {
           "type": "os",
           "style": "diamond",
+          "foreground": "#2E3440",
+          "background": "#A3BE8C",
+          "trailing_diamond": "\ue0b4",
+          "template": "{{ if eq .Env.MANUFACTURER \"Razer\" }}<transparent>\ue0b0</> {{.Icon}} {{end}}",
+          "properties": {
+            "linux": "\udb85\udd0e",
+            "macos": "\udb85\udd0e",
+            "ubuntu": "\udb85\udd0e",
+            "windows": "\udb85\udd0e"
+          }
+        },
+        {
+          "type": "os",
+          "style": "diamond",
           "foreground": "#BF616A",
           "background": "#d8dee9",
           "trailing_diamond": "\ue0b4",
-          "template": "<transparent>\ue0b0</> {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
+          "template": "{{if ne .Env.MANUFACTURER \"Razer\" }}<transparent>\ue0b0</> {{.Icon}} {{end}}",
           "properties": {
             "linux": "\uf1d0",
             "macos": "\uf1d0",
