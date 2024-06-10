@@ -267,41 +267,42 @@
             "{{ if gt .Code 0 }}#BF616A{{ end }}"
           ],
           "leading_diamond": "\ue0b6",
-          "template": "{{ if gt .Code 0 }} <#D8DEE9>\uf071  {{ .Meaning }}</>{{ else }}\uf00c{{ end }}<transparent> \ue0b2</>",
+          "template": "{{ if gt .Code 0 }} <#D8DEE9>\uf071  {{ .Meaning }}</>{{ else }}\uf00c{{ end }}<transparent,background> \ue0b2</>",
           "properties": {
             "always_enabled": true
           }
         },
         {
-          "type": "executiontime",
-          "style": "diamond",
-          "foreground": "#2E3440",
           "background": "#EBCB8B",
-          "leading_diamond": "\ue0b2",
-          "template": " \udb81\udd1f{{ .FormattedMs }}\u2800<transparent>\ue0b2</>",
+          "foreground": "#2E3440",
+          "leading_diamond": "<background,transparent>\ue0b2</>",
           "properties": {
             "style": "roundrock",
             "threshold": 0
-          }
+          },
+          "style": "diamond",
+          "template": " \udb81\udd1b {{ .FormattedMs }}\u2800<transparent,background>\ue0b2</>",
+          "type": "executiontime"
         },
         {
-          "type": "battery",
-          "style": "diamond",
-          "invert_powerline": true,
-          "foreground": "#2E3440",
           "background": "#8FBCBB",
+          "foreground": "#2E3440",
           "background_templates": [
             "{{if eq \"Charging\" .State.String}}#D08770{{end}}",
             "{{if eq \"Discharging\" .State.String}}#EBCB8B{{end}}",
             "{{if eq \"Full\" .State.String}}#8FBCBB{{end}}"
           ],
-          "leading_diamond": "\ue0b2",
-          "template": " {{ if not .Error }}{{ .Icon }}{{ .Percentage }} %{{ end }}{{ .Error }} <transparent>\ue0b2</>",
+          "invert_powerline": true,
+          "leading_diamond": "<background,transparent>\ue0b2</>",
+          "trailing_diamond": "<transparent,background>\ue0b2</>",
           "properties": {
-            "charged_icon": "\udb85\udfe6 ",
-            "charging_icon": "\uf1e6 ",
-            "discharging_icon": "\ue234 "
-          }
+            "charged_icon": "\udb84\ude11 ",
+            "charging_icon": "\udb80\udc84 ",
+            "discharging_icon": "\udb84\udea2 ",
+            "template": " {{ if not .Error }}{{ .Icon }}{{ .Percentage }} %{{ end }}{{ .Error }}{{ end }} <transparent,background>\ue0b2</>"
+          },
+          "style": "diamond",
+          "type": "battery"
         },
         {
           "type": "time",
@@ -309,7 +310,7 @@
           "invert_powerline": true,
           "foreground": "#2E3440",
           "background": "#88C0D0",
-          "leading_diamond": "\ue0b2",
+          "leading_diamond": "<background,transparent>\ue0b2</>",
           "trailing_diamond": "\ue0b4 ",
           "template": " \udb80\udcf0 {{ .CurrentDate | date .Format }} ",
           "properties": {

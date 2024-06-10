@@ -13,5 +13,6 @@ for f in "${HOME}"/.config/dot-files/zsh/zsh.d/*.zsh; do
 	source "${f}"
 done
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+if [ -f "${HOME}/.iterm2_shell_integration.zsh" ]; then
+	test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+fi
