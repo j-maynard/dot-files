@@ -53,3 +53,4 @@ export EDITOR=nvim
 # Source local environment variables to override
 # any of the envars defined here.
 source ~/.config/dot-files/zsh/zshenv.local
+. "$HOME/.cargo/env"

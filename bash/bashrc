@@ -21,3 +21,4 @@ for f in "${HOME}"/.config/dot-files/bash/bash.d/*.sh; do
 done
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+. "$HOME/.cargo/env"
